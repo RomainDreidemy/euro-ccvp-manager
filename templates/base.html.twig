@@ -8,21 +8,27 @@
     <body>
     <header>
         <nav class="navbar navbar-light bg-info">
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand" href="{{ url('home') }}">
                 <img src="{{ asset('assets/img/logo.png') }}" width="30" height="30" class="d-inline-block align-top" alt="">
                 <b class="text-white">Euro CCVP Manager</b>
             </a>
 
             <ul class="nav justify-content-end text-white">
                 <li class="nav-item">
-                    <a class="nav-link active text-white" href="#">Active</a>
+                    <a class="nav-link active text-white" href="{{ url('client') }}">Clients</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Link</a>
+                    <a class="nav-link text-white" href="{{ url('home') }}">Link</a>
                 </li>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 <li class="nav-item">
-                    <a class="nav-link text-white" href="#">Link</a>
+                    <a class="nav-link text-white" href="{{ url('app_logout') }}">Se déconnecter</a>
                 </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="{{ url('app_login') }}">Se connecter</a>
+                </li>
+                {% endif %}
             </ul>
         </nav>
     </header>

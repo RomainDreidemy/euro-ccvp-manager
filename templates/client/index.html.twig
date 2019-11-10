@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ClientController!{% endblock %}
+{% block title %}Liste des clients | Euro CCVP Manage{% endblock %}
 
 {% block body %}
 
@@ -18,7 +18,7 @@
         {% for c in Clients %}
         <tr>
             <th scope="row">{{ c.id }}</th>
-            <td><a href="{{ url('client') }}/{{ c.id }}">{{ c.name }}</a></td>
+            <td><a href="{{ url('clientShow', {'id': c.id}) }}">{{ c.name }}</a></td>
             <td>{{ c.description }}</td>
         </tr>
         {% endfor %}

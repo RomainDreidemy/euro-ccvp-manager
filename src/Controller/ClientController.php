@@ -3,14 +3,19 @@
 namespace App\Controller;
 
 use App\Entity\Client;
+use App\Form\ModifInfoType;
+use App\Repository\ClientRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class ClientController extends AbstractController
 {
     /**
      * @Route("/client", name="client")
+     * @isGranted("ROLE_ADMIN")
      */
     public function index(EntityManagerInterface $em)
     {
@@ -24,14 +29,30 @@ class ClientController extends AbstractController
 
     /**
      * @Route("/client/{id}", name="clientShow")
+     * @isGranted("ROLE_ADMIN")
      */
-    public function show($id, EntityManagerInterface $em)
+    public function show($id, EntityManagerInterface $em, ClientRepository $clientRepository, Request $request)
     {
         $client = $em->getRepository(Client::class)->find($id);
+        $form = $this->createForm(ModifInfoType::class, $client);
 
-        return $this->render('client/index.html.twig', [
+        $form->handleRequest($request);
+
+        // Vérifier que le formulaire ait été envoyé et que son contenu est valide
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Récupération des données du formulaire
+            $data = $form->getData();
+
+            $em->persist($data);
+            $em->flush();
+
+
+        }
+
+        return $this->render('client/show.html.twig', [
             'controller_name' => 'ClientController',
-            'Client' => $client
+            'Client' => $client,
+            'form' => $form->createView()
         ]);
     }
 }

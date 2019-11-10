@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
-use App\Entity\Client;
+use App\DataFixtures\TestFixtures;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 
 class HomeController extends AbstractController
@@ -13,30 +15,18 @@ class HomeController extends AbstractController
     /**
      * @Route("/", name="home")
      */
-    public function index(EntityManagerInterface $em)
+    public function index(EntityManagerInterface $em, UserPasswordEncoderInterface $passwordEncoder)
     {
-//        $client = new Client(1);
+//        $user = new User();
+//        $password = $passwordEncoder->encodePassword($user, 'test');
 //
-//        $client->setName('Romain test modif');
+//        $user->setEmail('dreidemyromain@gmail.com')
+//            ->setRoles(['ROLE_ADMIN'])
+//            ->setPassword($password);
 //
-//        $em->persist($client);
-//
+//        $em->persist($user);
 //        $em->flush();
 
-        $client = $em->getRepository(Client::class)->find(1);
-
-        $client->setName('Je modifie le name');
-
-        $em->persist($client);
-
-        $em->flush();
-
-
-        $clients = $em->getRepository(Client::class)->findAll();
-        dd($clients);
-
-        return $this->render('home/index.html.twig', [
-            'controller_name' => 'HomeController',
-        ]);
+        return $this->render('home/index.html.twig', []);
     }
 }
