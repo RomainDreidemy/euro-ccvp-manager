@@ -2,81 +2,77 @@
 
 namespace App\Controller;
 
-use App\Entity\Client;
 use App\Entity\Fournisseur;
+use App\Entity\Product;
 use App\Form\ModifInfoType;
-use App\Repository\ClientRepository;
+use App\Form\ProductAddFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
-class ClientController extends AbstractController
+class ProductController extends AbstractController
 {
     /**
-     * @Route("/clients/list", name="client")
+     * @Route("/products/list", name="productList")
      * @isGranted("ROLE_ADMIN")
      */
     public function index(EntityManagerInterface $em)
     {
-        $clients = $em->getRepository(Client::class)->findAll();
 
-        return $this->render('client/index.html.twig', [
-            'controller_name' => 'ClientController',
-            'Clients' => $clients
+        $produits = $em->getRepository(Product::class)->findAll();
+        return $this->render('product/index.html.twig', [
+            'Products' => $produits,
         ]);
     }
 
     /**
-     * @Route("/clients/{id}", name="clientShow")
+     * @Route("/products/new", name="productNew")
      * @isGranted("ROLE_ADMIN")
      */
-    public function show($id, EntityManagerInterface $em, ClientRepository $clientRepository, Request $request)
+    public function new(EntityManagerInterface $em, Request $request)
     {
-        $client = $em->getRepository(Client::class)->find($id);
-        $form = $this->createForm(ModifInfoType::class, $client);
-
+        $form = $this->createForm(ProductAddFormType::class);
         $form->handleRequest($request);
-
 
         // Vérifier que le formulaire ait été envoyé et que son contenu est valide
         if ($form->isSubmitted() && $form->isValid()) {
             // Récupération des données du formulaire
             $data = $form->getData();
-
             $em->persist($data);
             $em->flush();
 
-
+            return $this->redirectToRoute('productList');
         }
 
-        return $this->render('client/show.html.twig', [
-            'controller_name' => 'ClientController',
-            'Client' => $client,
+        return $this->render('product/new.html.twig', [
             'form' => $form->createView()
         ]);
     }
 
     /**
-     * @Route("/clients/new", name="clientNew")
+     * @Route("/products/{id}", name="productShow")
      * @isGranted("ROLE_ADMIN")
      */
-    public function new(EntityManagerInterface $em)
+    public function show($id, EntityManagerInterface $em, Request $request)
     {
-        $form = $this->createForm(ModifInfoType::class);
+        $form = $this->createForm(ProductAddFormType::class, $em->getRepository(Product::class)->find($id));
+        $form->handleRequest($request);
 
         // Vérifier que le formulaire ait été envoyé et que son contenu est valide
         if ($form->isSubmitted() && $form->isValid()) {
             // Récupération des données du formulaire
             $data = $form->getData();
-
             $em->persist($data);
             $em->flush();
-        }
 
-        return $this->render('client/new.html.twig', [
-            'form' => $form
+            return $this->redirectToRoute('productList');
+        }
+        return $this->render('product/show.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
+
+
 }

@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ClientRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
  */
-class Client
+class Product
 {
     /**
      * @ORM\Id()
@@ -29,13 +29,19 @@ class Client
     private $description;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Product", mappedBy="id_client")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Client", inversedBy="products")
      */
-    private $products;
+    private $id_client;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Fournisseur", inversedBy="products")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $id_fournisseur;
 
     public function __construct()
     {
-        $this->products = new ArrayCollection();
+        $this->id_client = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -68,37 +74,41 @@ class Client
     }
 
     /**
-     * @return Collection|Product[]
+     * @return Collection|Client[]
      */
-    public function getProducts(): Collection
+    public function getIdClient(): Collection
     {
-        return $this->products;
+        return $this->id_client;
     }
 
-    public function addProduct(Product $product): self
+    public function addIdClient(Client $idClient): self
     {
-        if (!$this->products->contains($product)) {
-            $this->products[] = $product;
-            $product->addIdClient($this);
+        if (!$this->id_client->contains($idClient)) {
+            $this->id_client[] = $idClient;
         }
 
         return $this;
     }
 
-    public function removeProduct(Product $product): self
+    public function removeIdClient(Client $idClient): self
     {
-        if ($this->products->contains($product)) {
-            $this->products->removeElement($product);
-            $product->removeIdClient($this);
+        if ($this->id_client->contains($idClient)) {
+            $this->id_client->removeElement($idClient);
         }
 
         return $this;
     }
 
-    public function __toString(){
-        // to show the name of the Category in the select
-        return $this->name;
-        // to show the id of the Category in the select
-         return $this->id;
+    public function getIdFournisseur(): ?Fournisseur
+    {
+        return $this->id_fournisseur;
     }
+
+    public function setIdFournisseur(?Fournisseur $id_fournisseur): self
+    {
+        $this->id_fournisseur = $id_fournisseur;
+
+        return $this;
+    }
+
 }

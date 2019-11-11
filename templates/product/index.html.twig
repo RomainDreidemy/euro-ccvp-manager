@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ProductController!{% endblock %}
+
+{% block body %}
+    <div class="d-flex">
+        <h1>Liste des produits</h1>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Description</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for p in Products %}
+            <tr>
+                <th scope="row">{{ p.id }}</th>
+                <td><a href="{{ url('productShow', {'id': p.id}) }}">{{ p.name }}</a></td>
+                <td>{{ p.description }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

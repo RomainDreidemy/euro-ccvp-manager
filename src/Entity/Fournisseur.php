@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ClientRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\FournisseurRepository")
  */
-class Client
+class Fournisseur
 {
     /**
      * @ORM\Id()
@@ -29,7 +29,7 @@ class Client
     private $description;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Product", mappedBy="id_client")
+     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="id_fournisseur", orphanRemoval=true)
      */
     private $products;
 
@@ -79,7 +79,7 @@ class Client
     {
         if (!$this->products->contains($product)) {
             $this->products[] = $product;
-            $product->addIdClient($this);
+            $product->setIdFournisseur($this);
         }
 
         return $this;
@@ -89,16 +89,19 @@ class Client
     {
         if ($this->products->contains($product)) {
             $this->products->removeElement($product);
-            $product->removeIdClient($this);
+            // set the owning side to null (unless already changed)
+            if ($product->getIdFournisseur() === $this) {
+                $product->setIdFournisseur(null);
+            }
         }
 
         return $this;
     }
-
     public function __toString(){
         // to show the name of the Category in the select
         return $this->name;
         // to show the id of the Category in the select
-         return $this->id;
+        return $this->id;
     }
+
 }
