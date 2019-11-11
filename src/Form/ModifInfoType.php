@@ -21,7 +21,7 @@ class ModifInfoType extends AbstractType
                 'required' => false,
                 'label' => 'Description du client'
             ])
-            ->add('updateClient', SubmitType::class)
+            ->add('Valider', SubmitType::class)
         ;
     }
 

@@ -14,7 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class ClientController extends AbstractController
 {
     /**
-     * @Route("/client", name="client")
+     * @Route("/clients/list", name="client")
      * @isGranted("ROLE_ADMIN")
      */
     public function index(EntityManagerInterface $em)
@@ -28,7 +28,7 @@ class ClientController extends AbstractController
     }
 
     /**
-     * @Route("/client/{id}", name="clientShow")
+     * @Route("/clients/{id}", name="clientShow")
      * @isGranted("ROLE_ADMIN")
      */
     public function show($id, EntityManagerInterface $em, ClientRepository $clientRepository, Request $request)
@@ -53,6 +53,28 @@ class ClientController extends AbstractController
             'controller_name' => 'ClientController',
             'Client' => $client,
             'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @Route("/clients/new", name="clientNew")
+     * @isGranted("ROLE_ADMIN")
+     */
+    public function new(EntityManagerInterface $em)
+    {
+        $form = $this->createForm(ModifInfoType::class);
+
+        // Vérifier que le formulaire ait été envoyé et que son contenu est valide
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Récupération des données du formulaire
+            $data = $form->getData();
+
+            $em->persist($data);
+            $em->flush();
+        }
+
+        return $this->render('client/new.html.twig', [
+            'form' => $form
         ]);
     }
 }
