@@ -28,14 +28,16 @@ class Fournisseur
      */
     private $description;
 
+
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Product", mappedBy="id_fournisseur", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Price", mappedBy="Fournisseur", orphanRemoval=true)
      */
-    private $products;
+    private $prices;
 
     public function __construct()
     {
-        $this->products = new ArrayCollection();
+        $this->pro_fou = new ArrayCollection();
+        $this->prices = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -67,41 +69,41 @@ class Fournisseur
         return $this;
     }
 
-    /**
-     * @return Collection|Product[]
-     */
-    public function getProducts(): Collection
-    {
-        return $this->products;
+    public function __toString(){
+        // to show the name of the Category in the select
+        return $this->name;
+        // to show the fid of the Category in the select
+        return $this->id;
     }
 
-    public function addProduct(Product $product): self
+    /**
+     * @return Collection|Price[]
+     */
+    public function getPrices(): Collection
     {
-        if (!$this->products->contains($product)) {
-            $this->products[] = $product;
-            $product->setIdFournisseur($this);
+        return $this->prices;
+    }
+
+    public function addPrice(Price $price): self
+    {
+        if (!$this->prices->contains($price)) {
+            $this->prices[] = $price;
+            $price->setFournisseur($this);
         }
 
         return $this;
     }
 
-    public function removeProduct(Product $product): self
+    public function removePrice(Price $price): self
     {
-        if ($this->products->contains($product)) {
-            $this->products->removeElement($product);
+        if ($this->prices->contains($price)) {
+            $this->prices->removeElement($price);
             // set the owning side to null (unless already changed)
-            if ($product->getIdFournisseur() === $this) {
-                $product->setIdFournisseur(null);
+            if ($price->getFournisseur() === $this) {
+                $price->setFournisseur(null);
             }
         }
 
         return $this;
     }
-    public function __toString(){
-        // to show the name of the Category in the select
-        return $this->name;
-        // to show the id of the Category in the select
-        return $this->id;
-    }
-
 }

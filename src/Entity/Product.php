@@ -34,14 +34,22 @@ class Product
     private $id_client;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Fournisseur", inversedBy="products")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToMany(targetEntity="App\Entity\Fournisseur", mappedBy="pro_fou")
      */
-    private $id_fournisseur;
+    private $fournisseurs;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Price", mappedBy="Product", orphanRemoval=true)
+     */
+    private $prices;
+
+
 
     public function __construct()
     {
         $this->id_client = new ArrayCollection();
+        $this->fournisseurs = new ArrayCollection();
+        $this->prices = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -99,16 +107,41 @@ class Product
         return $this;
     }
 
-    public function getIdFournisseur(): ?Fournisseur
-    {
-        return $this->id_fournisseur;
+    public function __toString(){
+        // to show the name of the Category in the select
+        return $this->name;
+        // to show the id of the Category in the select
+//        return $this->id;
     }
 
-    public function setIdFournisseur(?Fournisseur $id_fournisseur): self
+    /**
+     * @return Collection|Price[]
+     */
+    public function getPrices(): Collection
     {
-        $this->id_fournisseur = $id_fournisseur;
+        return $this->prices;
+    }
+
+    public function addPrice(Price $price): self
+    {
+        if (!$this->prices->contains($price)) {
+            $this->prices[] = $price;
+            $price->setProduct($this);
+        }
 
         return $this;
     }
 
+    public function removePrice(Price $price): self
+    {
+        if ($this->prices->contains($price)) {
+            $this->prices->removeElement($price);
+            // set the owning side to null (unless already changed)
+            if ($price->getProduct() === $this) {
+                $price->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
 }

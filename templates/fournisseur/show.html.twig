@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajout d'un fournisseur | Euro CCVP Manager{% endblock %}
+
+{% block body %}
+    <h1>Informations d'un fournisseur</h1>
+    {{ form_start(form) }}
+    <div class="my-custom-class-for-errors">
+        {{ form_errors(form) }}
+    </div>
+    {{ form_end(form) }}
+
+    <hr>
+
+{#    <div class="row">#}
+{#    {% for p in product %}#}
+{#            <div class="col-sm-6">#}
+{#                <div class="card">#}
+{#                    <div class="card-body">#}
+{#                        <h5 class="card-title">{{ p.name }}</h5>#}
+{#                        <p class="card-text">{{ p.description }}</p>#}
+{#                        <a href="{{ url('productShow', {'id': p.id}) }}" class="btn btn-primary">Voir la fiche produit</a>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#    {% endfor %}#}
+{#    </div>#}
+
+{% endblock %}
