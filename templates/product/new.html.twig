@@ -25,20 +25,27 @@
     </div>
 
 
-    <h2>Fournisseurs et prix</h2>
-    <div class="form-group">
-        <select name="fournisseurs[]" id="" class="form-control mb-3">
-            {% for f in fournisseurs %}
-            <option value="{{ f.id }}">{{ f.name }}</option>
-            {% endfor %}
-        </select>
+    <div id="fournisseursPrices">
+        <h2>Fournisseurs et prix
+            <div class="btn btn-info" id="ajoutFournisseursPrices">Ajouter</div></h2>
+        <div class="form-group">
+            <select name="fournisseurs[]" id="" class="form-control mb-3">
+                <option value="0" selected>Choisir un fournisseur</option>
+                {% for f in fournisseurs %}
+                    <option value="{{ f.id }}">{{ f.name }}</option>
+                {% endfor %}
+            </select>
 
-        <div class="d-flex">
-            <input class="form-control" type="number" name="public_price[]" placeholder="Prix public">
-            <input class="form-control" type="number" name="net_price[]" placeholder="Prix net">
-            <input class="form-control" type="number" name="revente_price[]" placeholder="Prix de revente">
+            <div class="d-flex">
+                <input class="form-control" type="number" name="public_price[]" placeholder="Prix public">
+                <input class="form-control" type="number" name="net_price[]" placeholder="Prix net">
+                <input class="form-control" type="number" name="revente_price[]" placeholder="Prix de revente">
+            </div>
         </div>
     </div>
+
+
+
 
     {{ form_end(form) }}
 {% endblock %}

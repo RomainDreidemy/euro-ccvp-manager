@@ -47,19 +47,24 @@ class ProductController extends AbstractController
 
 //            Ajout des prix :
             for ($i=0; sizeof($request->request->get('fournisseurs')) > $i; $i++){
-                $price = new Price();
-                $price
-                    ->setFournisseur(
-                        $em->getRepository(Fournisseur::class)->find($_POST['fournisseurs'][$i])
-                    )
-                    ->setPublicPrice($request->request->get('public_price')[$i])
-                    ->setNetPrice($request->request->get('public_price')[$i])
-                    ->setReventePrice($request->request->get('public_price')[$i])
-                    ->setProduct($data)
+                $fournisseur = $request->request->get('fournisseurs')[$i];
+                if( $fournisseur != 0 && !in_array( $fournisseur, $fournisseurCheck ?? [])){
+                    $fournisseurCheck[] =  $fournisseur;
+                    $price = new Price();
+                    $price
+                        ->setFournisseur(
+                            $em->getRepository(Fournisseur::class)->find($_POST['fournisseurs'][$i])
+                        )
+                        ->setPublicPrice($request->request->get('public_price')[$i])
+                        ->setNetPrice($request->request->get('net_price')[$i])
+                        ->setReventePrice($request->request->get('revente_price')[$i])
+                        ->setProduct($data)
                     ;
 
-                $em->persist($price);
-                $em->flush();
+                    $em->persist($price);
+                    $em->flush();
+                }
+
             }
 
             return $this->redirectToRoute('productList');
