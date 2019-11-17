@@ -53,7 +53,7 @@ class ClientController extends AbstractController
         return $this->render('client/show.html.twig', [
             'controller_name' => 'ClientController',
             'Client' => $client,
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 
