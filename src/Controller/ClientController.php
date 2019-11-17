@@ -85,4 +85,18 @@ class ClientController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+    /**
+     * @Route("/clients/delete/{id}", name="clientDelete")
+     * @isGranted("ROLE_ADMIN")
+     */
+    public function delete($id, EntityManagerInterface $em)
+    {
+        $client = $em->getRepository(Client::class)->find($id);
+        $em->remove($client);
+        $em->flush();
+
+        $this->addFlash('success', "<b>" . $client->getName() . "</b> a bien été supprimer de la liste des clients");
+        return $this->redirectToRoute('client');
+    }
 }

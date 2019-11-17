@@ -142,4 +142,18 @@ class ProductController extends AbstractController
             'fournisseurs' => $em->getRepository(Fournisseur::class)->findAll()
         ]);
     }
+
+    /**
+     * @Route("/product/delete/{id}", name="productDelete")
+     * @isGranted("ROLE_ADMIN")
+     */
+    public function delete($id, EntityManagerInterface $em)
+    {
+        $product = $em->getRepository(Product::class)->find($id);
+        $em->remove($product);
+        $em->flush();
+
+        $this->addFlash('success', "<b>" . $product->getName() . "</b> a bien été supprimer de la liste des produits");
+        return $this->redirectToRoute('productList');
+    }
 }

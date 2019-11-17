@@ -33,4 +33,9 @@
         {% endfor  %}
         </tbody>
     </table>
+
+    <hr>
+
+    <a href="{{ url('fournisseursDelete', {'id': fournisseur.id}) }}" class="btn btn-danger">Supprimer le fournisseur</a>
+
 {% endblock %}

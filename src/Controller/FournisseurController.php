@@ -74,7 +74,23 @@ class FournisseurController extends AbstractController
 
         return $this->render('fournisseur/show.html.twig', [
             'form' => $form->createView(),
-            'prices' => $fournisseur->getPrices()
+            'prices' => $fournisseur->getPrices(),
+            'fournisseur' => $fournisseur
         ]);
     }
+
+    /**
+     * @Route("/fournisseurs/delete/{id}", name="fournisseursDelete")
+     * @isGranted("ROLE_ADMIN")
+     */
+    public function delete($id, EntityManagerInterface $em)
+    {
+        $fournisseur = $em->getRepository(Fournisseur::class)->find($id);
+        $em->remove($fournisseur);
+        $em->flush();
+
+        $this->addFlash('success', "<b>" . $fournisseur->getName() . "</b> a bien été supprimer de la liste des fournisseurs");
+        return $this->redirectToRoute('fournisseurList');
+    }
+
 }

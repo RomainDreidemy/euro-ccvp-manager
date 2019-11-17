@@ -33,4 +33,5 @@
     </table>
 
     <a href="{{ url('productChange', {'id': product.id}) }}" class="btn btn-info">Modifier le produit</a>
+    <a href="{{ url('productDelete', {'id': product.id}) }}" class="btn btn-danger">Supprimer le produit</a>
 {% endblock %}
