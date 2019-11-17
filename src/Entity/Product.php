@@ -34,11 +34,6 @@ class Product
     private $id_client;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Fournisseur", mappedBy="pro_fou")
-     */
-    private $fournisseurs;
-
-    /**
      * @ORM\OneToMany(targetEntity="App\Entity\Price", mappedBy="Product", orphanRemoval=true)
      */
     private $prices;

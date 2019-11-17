@@ -36,7 +36,6 @@ class Fournisseur
 
     public function __construct()
     {
-        $this->pro_fou = new ArrayCollection();
         $this->prices = new ArrayCollection();
     }
 

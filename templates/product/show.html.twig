@@ -4,9 +4,31 @@
 
 {% block body %}
     <h1>Information du produit : </h1>
-    {{ form_start(form) }}
-    <div class="my-custom-class-for-errors">
-        {{ form_errors(form) }}
-    </div>
-    {{ form_end(form) }}
+
+    <h2>{{ product.name }}</h2>
+    <p>{{ product.description }}</p>
+
+    <h3>Fournisseurs et prix : </h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Fournisseur</th>
+            <th scope="col">Prix public</th>
+            <th scope="col">Prix net</th>
+            <th scope="col">Prix de revente</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for price in product.prices %}
+        <tr>
+            <th scope="row">{{ price.fournisseur }}</th>
+            <td>{{ price.publicPrice }} €</td>
+            <td>{{ price.netPrice }} €</td>
+            <td>{{ price.reventePrice }} €</td>
+        </tr>
+        {% endfor  %}
+        </tbody>
+    </table>
+
+    <a href="{{ url('productChange', {'id': product.id}) }}" class="btn btn-info">Modifier le produit</a>
 {% endblock %}

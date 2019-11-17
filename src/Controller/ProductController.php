@@ -80,7 +80,20 @@ class ProductController extends AbstractController
      * @Route("/products/{id}", name="productShow")
      * @isGranted("ROLE_ADMIN")
      */
-    public function show($id, EntityManagerInterface $em, Request $request)
+    public function show($id, EntityManagerInterface $em)
+    {
+        $product = $em->getRepository(Product::class)->find($id);
+
+        return $this->render('product/show.html.twig', [
+            'product' => $product
+        ]);
+    }
+
+    /**
+     * @Route("/products/change/{id}", name="productChange")
+     * @isGranted("ROLE_ADMIN")
+     */
+    public function change($id, EntityManagerInterface $em, Request $request)
     {
         $product = $em->getRepository(Product::class)->find($id);
         $form = $this->createForm(FormProductType::class, $product);
@@ -90,19 +103,42 @@ class ProductController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // Récupération des données du formulaire
             $data = $form->getData();
-
-
             $em->persist($data);
-            $em->flush();
+            $em->flush($data);
+            $em->refresh($data);
+
+            foreach ($product->getPrices() as $pri){
+                $product->removePrice($pri  );
+            }
+//            Ajout des prix :
+            for ($i=0; sizeof($request->request->get('fournisseurs')) > $i; $i++){
+                $fournisseur = $request->request->get('fournisseurs')[$i];
+                if( $fournisseur != 0 && !in_array( $fournisseur, $fournisseurCheck ?? [])){
+                    $fournisseurCheck[] =  $fournisseur;
+                    $price = new Price();
+                    $price
+                        ->setFournisseur(
+                            $em->getRepository(Fournisseur::class)->find($_POST['fournisseurs'][$i])
+                        )
+                        ->setPublicPrice($request->request->get('public_price')[$i])
+                        ->setNetPrice($request->request->get('net_price')[$i])
+                        ->setReventePrice($request->request->get('revente_price')[$i])
+                        ->setProduct($data)
+                    ;
+
+                    $em->persist($price);
+                    $em->flush();
+                }
+
+            }
 
             return $this->redirectToRoute('productList');
         }
 
-
-        return $this->render('product/show.html.twig', [
+        return $this->render('product/change.html.twig', [
             'form' => $form->createView(),
+            'product' => $product,
+            'fournisseurs' => $em->getRepository(Fournisseur::class)->findAll()
         ]);
     }
-
-
 }
