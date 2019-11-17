@@ -42,6 +42,7 @@ class FournisseurController extends AbstractController
             $em->persist($data);
             $em->flush();
 
+            $this->addFlash('success', "<b>" . $data->getName() . "</b> a bien été ajouté dans la liste des fournisseurs");
             return $this->redirectToRoute('fournisseurList');
         }
 
@@ -67,6 +68,7 @@ class FournisseurController extends AbstractController
             $em->persist($data);
             $em->flush();
 
+            $this->addFlash('success', "<b>" . $data->getName() . "</b> a bien été modifié dans la liste des fournisseurs");
             return $this->redirectToRoute('fournisseurList');
         }
 

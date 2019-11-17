@@ -67,6 +67,7 @@ class ProductController extends AbstractController
 
             }
 
+            $this->addFlash('success', "<b>" . $data->getName() . "</b> a bien été ajouté dans la liste des produits");
             return $this->redirectToRoute('productList');
         }
 
@@ -131,7 +132,7 @@ class ProductController extends AbstractController
                 }
 
             }
-
+            $this->addFlash('success', "<b>" . $data->getName() . "</b> a bien été modifié dans la liste des produits");
             return $this->redirectToRoute('productList');
         }
 

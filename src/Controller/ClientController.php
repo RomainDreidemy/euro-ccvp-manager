@@ -47,6 +47,7 @@ class ClientController extends AbstractController
             $em->persist($data);
             $em->flush();
 
+            $this->addFlash('success', "<b>" . $data->getName() . "</b> a bien été modifié dans la liste des clients");
             return $this->redirectToRoute('client');
         }
 
@@ -74,6 +75,9 @@ class ClientController extends AbstractController
 
             $em->persist($data);
             $em->flush();
+
+
+            $this->addFlash('success', "<b>" . $data->getName() . "</b> a bien été ajouté dans la liste des clients");
             return $this->redirectToRoute('client');
         }
 
