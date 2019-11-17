@@ -108,7 +108,7 @@ class ProductController extends AbstractController
             $em->refresh($data);
 
             foreach ($product->getPrices() as $pri){
-                $product->removePrice($pri  );
+                $product->removePrice($pri);
             }
 //            Ajout des prix :
             for ($i=0; sizeof($request->request->get('fournisseurs')) > $i; $i++){

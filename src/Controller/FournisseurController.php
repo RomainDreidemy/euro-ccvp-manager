@@ -70,10 +70,9 @@ class FournisseurController extends AbstractController
             return $this->redirectToRoute('fournisseurList');
         }
 
-
-
         return $this->render('fournisseur/show.html.twig', [
             'form' => $form->createView(),
+            'prices' => $fournisseur->getPrices()
         ]);
     }
 }

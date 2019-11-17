@@ -79,6 +79,7 @@ class Product
     /**
      * @return Collection|Client[]
      */
+
     public function getIdClient(): Collection
     {
         return $this->id_client;

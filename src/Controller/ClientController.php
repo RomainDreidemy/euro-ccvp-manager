@@ -28,7 +28,7 @@ class ClientController extends AbstractController
     }
 
     /**
-     * @Route("/clients/{id}", name="clientShow")
+     * @Route("/clients/infos/{id}", name="clientShow")
      * @isGranted("ROLE_ADMIN")
      */
     public function show($id, EntityManagerInterface $em, ClientRepository $clientRepository, Request $request)
@@ -61,9 +61,11 @@ class ClientController extends AbstractController
      * @Route("/clients/new", name="clientNew")
      * @isGranted("ROLE_ADMIN")
      */
-    public function new(EntityManagerInterface $em)
+    public function new(EntityManagerInterface $em, Request $request)
     {
         $form = $this->createForm(ModifInfoType::class);
+
+        $form->handleRequest($request);
 
         // Vérifier que le formulaire ait été envoyé et que son contenu est valide
         if ($form->isSubmitted() && $form->isValid()) {
@@ -76,7 +78,7 @@ class ClientController extends AbstractController
         }
 
         return $this->render('client/new.html.twig', [
-            'form' => $form
+            'form' => $form->createView()
         ]);
     }
 }

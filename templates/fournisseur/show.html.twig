@@ -12,18 +12,25 @@
 
     <hr>
 
-{#    <div class="row">#}
-{#    {% for p in product %}#}
-{#            <div class="col-sm-6">#}
-{#                <div class="card">#}
-{#                    <div class="card-body">#}
-{#                        <h5 class="card-title">{{ p.name }}</h5>#}
-{#                        <p class="card-text">{{ p.description }}</p>#}
-{#                        <a href="{{ url('productShow', {'id': p.id}) }}" class="btn btn-primary">Voir la fiche produit</a>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#    {% endfor %}#}
-{#    </div>#}
-
+    <h3>Produits et prix : </h3>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Produit</th>
+            <th scope="col">Prix public</th>
+            <th scope="col">Prix net</th>
+            <th scope="col">Prix de revente</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for price in prices %}
+            <tr>
+                <th scope="row"><a href="{{ url('productShow', {'id': price.product.id}) }}">{{ price.product }}</a></th>
+                <td>{{ price.publicPrice }} €</td>
+                <td>{{ price.netPrice }} €</td>
+                <td>{{ price.reventePrice }} €</td>
+            </tr>
+        {% endfor  %}
+        </tbody>
+    </table>
 {% endblock %}
