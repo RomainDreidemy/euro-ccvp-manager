@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ProductController!{% endblock %}
+{% block title %}Modificaion de {{ product.name }}{% endblock %}
 
 {% block body %}
-    <h1>Ajout d'un produit</h1>
+    <h1>Modification d'un produit</h1>
     {{ form_start(form) }}
     <div class="my-custom-class-for-errors">
         {{ form_errors(form) }}
