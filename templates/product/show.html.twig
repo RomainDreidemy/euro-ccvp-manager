@@ -32,6 +32,35 @@
         </tbody>
     </table>
 
+    <hr>
+
+    <div class="d-flex justify-content-between mb-3">
+        <h3>Fiches techniques : </h3>
+        <a href="{{ url('productAddDocumentation', {id: product.id}) }}" class="btn btn-success">Ajouter une fiche technique</a>
+    </div>
+
+    {% if product.documentations is not empty %}
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Nom de la fiche</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for documentation in product.documentations %}
+            <tr>
+                <td scope="row"><a href="{{ asset('assets/documentations/') }}{{ documentation.name }}" target="_blank">{{ documentation.name }}</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% else %}
+        <p>Ce produit n'a pas de documentation</p>
+    {% endif %}
+
+    <hr>
+
     <a href="{{ url('productChange', {'id': product.id}) }}" class="btn btn-info">Modifier le produit</a>
     <a href="{{ url('productDelete', {'id': product.id}) }}" class="btn btn-danger">Supprimer le produit</a>
 {% endblock %}

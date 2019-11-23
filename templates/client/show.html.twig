@@ -12,20 +12,28 @@
 
     <hr>
 
-{#    <h3>Produits :</h3>#}
-{#    <div class="row">#}
-{#        {% for p in Client.products %}#}
-{#        <div class="col-sm-6">#}
-{#            <div class="card">#}
-{#                <div class="card-body">#}
-{#                    <h5 class="card-title">{{ p.name }}</h5>#}
-{#                    <p class="card-text">{{ p.description }}</p>#}
-{#                    <a href="{{ url('productShow', {'id': p.id}) }}" class="btn btn-primary">Fiche produit</a>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#        {% endfor %}#}
-{#    </div>#}
+    <h3>Produits :</h3>
+
+
+    {% if Client.products is not empty %}
+    <div class="row">
+        {% for product in Client.products %}
+            <div class="col-sm-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.description }}</p>
+                        <a href="{{ url('productShow', {'id': product.id}) }}" class="btn btn-primary">Fiche produit</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% else %}
+        <p class="text-break">Ce client n'a aucun produit</p>
+    {% endif %}
+
+    <hr>
 
     <a href="{{ url('clientDelete', {'id': Client.id}) }}" class="btn btn-danger">Supprimer le client</a>
 

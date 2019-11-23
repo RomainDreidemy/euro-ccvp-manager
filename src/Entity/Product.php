@@ -38,6 +38,11 @@ class Product
      */
     private $prices;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Documentation", mappedBy="product", orphanRemoval=true)
+     */
+    private $documentations;
+
 
 
     public function __construct()
@@ -45,6 +50,7 @@ class Product
         $this->id_client = new ArrayCollection();
         $this->fournisseurs = new ArrayCollection();
         $this->prices = new ArrayCollection();
+        $this->documentations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -135,6 +141,37 @@ class Product
             // set the owning side to null (unless already changed)
             if ($price->getProduct() === $this) {
                 $price->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Documentation[]
+     */
+    public function getDocumentations(): Collection
+    {
+        return $this->documentations;
+    }
+
+    public function addDocumentation(Documentation $documentation): self
+    {
+        if (!$this->documentations->contains($documentation)) {
+            $this->documentations[] = $documentation;
+            $documentation->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDocumentation(Documentation $documentation): self
+    {
+        if ($this->documentations->contains($documentation)) {
+            $this->documentations->removeElement($documentation);
+            // set the owning side to null (unless already changed)
+            if ($documentation->getProduct() === $this) {
+                $documentation->setProduct(null);
             }
         }
 

@@ -3,7 +3,6 @@ let btn = $('#ajoutFournisseursPrices'),
 
 
 btn.click(function () {
-    console.log(fournisseurPricesToCopy);
     $('#fournisseursPrices').append('<hr>');
     $('#fournisseursPrices').append(fournisseurPricesToCopy.clone());
 });

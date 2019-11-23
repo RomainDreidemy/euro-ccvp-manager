@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Documentation;
 use App\Entity\Fournisseur;
 use App\Entity\Price;
 use App\Entity\Product;
+use App\Form\AddDocumentationFormType;
 use App\Form\FormProductType;
 use App\Form\ProductWithPricesType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -155,5 +157,35 @@ class ProductController extends AbstractController
 
         $this->addFlash('success', "<b>" . $product->getName() . "</b> a bien été supprimer de la liste des produits");
         return $this->redirectToRoute('productList');
+    }
+
+    /**
+     * @Route("/product/{id}/add-documentation", name="productAddDocumentation")
+     * @isGranted("ROLE_ADMIN")
+     */
+    public function addDocumentation(Product $product, EntityManagerInterface $em, Request $request)
+    {
+        $form = $this->createForm(AddDocumentationFormType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form['documentation']->getData();
+            $file->move(__DIR__ . '/../../public/assets/documentations', $file->getClientOriginalName());
+
+            $documentation = (new Documentation())
+                ->setName($file->getClientOriginalName())
+                ->setProduct($product)
+            ;
+
+            $em->persist($documentation);
+
+            $em->flush();
+
+            return $this->redirectToRoute('productShow', ['id' => $product->getId()]);
+        }
+
+        return $this->render('product/add-documentation.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 }
