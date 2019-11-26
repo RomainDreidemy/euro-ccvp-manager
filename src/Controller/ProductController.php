@@ -201,6 +201,8 @@ class ProductController extends AbstractController
 
         $em->flush();
 
+        unlink(__DIR__ . '/../../public/assets/documentations/' . $doc->getName());
+
         $this->addFlash('success', 'La documentation n\'est plus liée au produit');
 
         return $this->redirectToRoute('productShow', ['id' => $product->getId()]);
