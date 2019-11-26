@@ -160,7 +160,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/product/{id}/add-documentation", name="productAddDocumentation")
+     * @Route("/product/{id}/documentation/add", name="productAddDocumentation")
      * @isGranted("ROLE_ADMIN")
      */
     public function addDocumentation(Product $product, EntityManagerInterface $em, Request $request)
@@ -187,5 +187,22 @@ class ProductController extends AbstractController
         return $this->render('product/add-documentation.html.twig', [
             'form' => $form->createView()
         ]);
+    }
+
+    /**
+     * @Route("/product/{id}/documentation/remove/{doc}", name="productRemoveDocumentation")
+     * @isGranted("ROLE_ADMIN")
+     */
+    public function removeDocumentation(Product $product, Documentation $doc,EntityManagerInterface $em)
+    {
+        $product->removeDocumentation($doc);
+
+        $em->persist($product);
+
+        $em->flush();
+
+        $this->addFlash('success', 'La documentation n\'est plus liée au produit');
+
+        return $this->redirectToRoute('productShow', ['id' => $product->getId()]);
     }
 }

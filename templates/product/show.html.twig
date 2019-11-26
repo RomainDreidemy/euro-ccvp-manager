@@ -49,7 +49,12 @@
         <tbody>
             {% for documentation in product.documentations %}
             <tr>
-                <td scope="row"><a href="{{ asset('assets/documentations/') }}{{ documentation.name }}" target="_blank">{{ documentation.name }}</a></td>
+                <td scope="row">
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ asset('assets/documentations/') }}{{ documentation.name }}" target="_blank">{{ documentation.name }}</a>
+                        <a href="{{ url('productRemoveDocumentation', {id: product.id, doc: documentation.id}) }}" class="btn btn-danger">Supprimer</a>
+                    </div>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
