@@ -1,16 +1,34 @@
 $violet: #BA55D3;
-$rouge: #B22222;
+$violetFonce: #9647AA;
+$rouge: #CE4141;
+$rougeFonce: #B22222;
 
 .btn-danger, .alert-danger{
   background: $rouge !important;
+  &:hover{
+    background: $rougeFonce !important;
+  }
 }
 
-.bg-primary, .btn-primary{
+.bg-primary, .btn-primary, .alert-primary{
   background: $violet !important;
 }
+.btn-primary, .alert-primary{
+  &:hover{
+    background: $violetFonce !important;
+  }
+}
+
+.text-primary{
+  color: $violet !important;
+}
+
 
 .btn-primary{
   border: 1px solid $violet;
+  &:hover{
+    border: 1px solid $violet;
+  }
 }
 
 a{

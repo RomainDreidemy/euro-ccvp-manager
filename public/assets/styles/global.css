@@ -1,11 +1,21 @@
 .btn-danger, .alert-danger {
-  background: #B22222 !important; }
+  background: #CE4141 !important; }
+  .btn-danger:hover, .alert-danger:hover {
+    background: #B22222 !important; }
 
-.bg-primary, .btn-primary {
+.bg-primary, .btn-primary, .alert-primary {
   background: #BA55D3 !important; }
+
+.btn-primary:hover, .alert-primary:hover {
+  background: #9647AA !important; }
+
+.text-primary {
+  color: #BA55D3 !important; }
 
 .btn-primary {
   border: 1px solid #BA55D3; }
+  .btn-primary:hover {
+    border: 1px solid #BA55D3; }
 
 a {
   color: #BA55D3; }

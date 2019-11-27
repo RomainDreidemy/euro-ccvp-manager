@@ -3,7 +3,33 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
+    <h1 class="mb-5">Bienvenue sur l'outils Manager pour Euro CCVP</h1>
 
+    <div class="d-flex justify-content-between">
+        <div class="card text-white bg-white mb-3 col-md-4 p-0 mr-3">
+            <div class="card-header text-primary">Clients</div>
+            <div class="card-body">
+                <h5 class="card-title text-primary">{{ nb_clients }} clients enregistré</h5>
+                <a href="{{ url('client') }}" class="btn btn-primary">Voir les clients</a>
+            </div>
+        </div>
+
+        <div class="card text-white bg-white mb-3 col-md-4 p-0 mr-3">
+            <div class="card-header text-primary">Produits</div>
+            <div class="card-body">
+                <h5 class="card-title text-primary">{{ nb_products }} Produits enregisté</h5>
+                <a href="{{ url('productList') }}" class="btn btn-primary">Voir les produits</a>
+            </div>
+        </div>
+
+        <div class="card text-white bg-white mb-3 col-md-4 p-0">
+            <div class="card-header text-primary">Fournisseurs</div>
+            <div class="card-body">
+                <h5 class="card-title text-primary">{{ nb_fournisseurs }} fournisseurs enregistré</h5>
+                <a href="{{ url('fournisseurList') }}" class="btn btn-primary">Voir les fournisseurs</a>
+            </div>
+        </div>
+    </div>
 
 
 {% endblock %}
