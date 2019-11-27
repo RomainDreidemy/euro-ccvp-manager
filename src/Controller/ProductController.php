@@ -83,12 +83,32 @@ class ProductController extends AbstractController
      * @Route("/products/{id}", name="productShow")
      * @isGranted("ROLE_ADMIN")
      */
-    public function show($id, EntityManagerInterface $em)
+    public function show($id, EntityManagerInterface $em, Request $request)
     {
         $product = $em->getRepository(Product::class)->find($id);
 
+        $formAddDocumentation = $this->createForm(AddDocumentationFormType::class);
+        $formAddDocumentation->handleRequest($request);
+
+        if ($formAddDocumentation->isSubmitted() && $formAddDocumentation->isValid()) {
+            $file = $formAddDocumentation['documentation']->getData();
+            $file->move(__DIR__ . '/../../public/assets/documentations', $file->getClientOriginalName());
+
+            $documentation = (new Documentation())
+                ->setName($file->getClientOriginalName())
+                ->setProduct($product)
+            ;
+
+            $em->persist($documentation);
+
+            $em->flush();
+
+            return $this->redirectToRoute('productShow', ['id' => $product->getId()]);
+        }
+
         return $this->render('product/show.html.twig', [
-            'product' => $product
+            'product' => $product,
+            'formAddDocumentation' => $formAddDocumentation->createView()
         ]);
     }
 
@@ -157,36 +177,6 @@ class ProductController extends AbstractController
 
         $this->addFlash('success', "<b>" . $product->getName() . "</b> a bien été supprimer de la liste des produits");
         return $this->redirectToRoute('productList');
-    }
-
-    /**
-     * @Route("/product/{id}/documentation/add", name="productAddDocumentation")
-     * @isGranted("ROLE_ADMIN")
-     */
-    public function addDocumentation(Product $product, EntityManagerInterface $em, Request $request)
-    {
-        $form = $this->createForm(AddDocumentationFormType::class);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $file = $form['documentation']->getData();
-            $file->move(__DIR__ . '/../../public/assets/documentations', $file->getClientOriginalName());
-
-            $documentation = (new Documentation())
-                ->setName($file->getClientOriginalName())
-                ->setProduct($product)
-            ;
-
-            $em->persist($documentation);
-
-            $em->flush();
-
-            return $this->redirectToRoute('productShow', ['id' => $product->getId()]);
-        }
-
-        return $this->render('product/add-documentation.html.twig', [
-            'form' => $form->createView()
-        ]);
     }
 
     /**

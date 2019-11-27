@@ -36,7 +36,22 @@
 
     <div class="d-flex justify-content-between mb-3">
         <h3>Fiches techniques : </h3>
-        <a href="{{ url('productAddDocumentation', {id: product.id}) }}" class="btn btn-success">Ajouter une fiche technique</a>
+
+        <div>
+            {{ form_start(formAddDocumentation) }}
+            <div class="d-flex">
+                <div class="mr-2">
+                    {{ form_widget(formAddDocumentation.documentation) }}
+                </div>
+
+                <div>
+                    {{ form_widget(formAddDocumentation.valider) }}
+                </div>
+            </div>
+
+            {{ form_end(formAddDocumentation) }}
+        </div>
+{#        <a href="{{ url('productAddDocumentation', {id: product.id}) }}" class="btn btn-primary">Ajouter une fiche technique</a>#}
     </div>
 
     {% if product.documentations is not empty %}
@@ -52,7 +67,7 @@
                 <td scope="row">
                     <div class="d-flex justify-content-between">
                         <a href="{{ asset('assets/documentations/') }}{{ documentation.name }}" target="_blank">{{ documentation.name }}</a>
-                        <a href="{{ url('productRemoveDocumentation', {id: product.id, doc: documentation.id}) }}" class="btn btn-danger">Supprimer</a>
+                        <a href="{{ url('productRemoveDocumentation', {id: product.id, doc: documentation.id}) }}" class="btn btn-danger btn-sm">Supprimer</a>
                     </div>
                 </td>
             </tr>
