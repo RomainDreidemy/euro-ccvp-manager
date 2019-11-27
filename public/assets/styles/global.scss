@@ -1,0 +1,23 @@
+$violet: #BA55D3;
+$rouge: #B22222;
+
+.btn-danger, .alert-danger{
+  background: $rouge !important;
+}
+
+.bg-primary, .btn-primary{
+  background: $violet !important;
+}
+
+.btn-primary{
+  border: 1px solid $violet;
+}
+
+a{
+  color: $violet;
+
+  &:hover{
+    color: $violet;
+  }
+}
+

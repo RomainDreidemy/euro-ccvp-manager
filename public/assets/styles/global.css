@@ -1,3 +1,15 @@
+.btn-danger, .alert-danger {
+  background: #B22222 !important; }
 
+.bg-primary, .btn-primary {
+  background: #BA55D3 !important; }
+
+.btn-primary {
+  border: 1px solid #BA55D3; }
+
+a {
+  color: #BA55D3; }
+  a:hover {
+    color: #BA55D3; }
 
 /*# sourceMappingURL=global.css.map */
